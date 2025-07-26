@@ -178,7 +178,7 @@ Befehle wie `move_pose`, `pick_xy`, `open_gripper`. sind darüber ausführbar.
 Das aktuelle Kamerabild ist unter folgendem ROS-Topic verfügbar:
 
 ```
-/camera/image_raw
+/image_raw
 ```
 
 > Dieses Topic kann z. B. mit `rqt_image_view` oder in RViz abonniert werden.
