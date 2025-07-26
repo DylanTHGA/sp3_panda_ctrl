@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda">
+
+  <!-- === INCLUDE NECESSARY XACRO FILES === -->
+  <xacro:include filename="$(find franka_description)/robots/common/franka_robot.xacro"/>
+  <xacro:include filename="$(find sp3_panda_ctrl)/urdf/traffic_light.urdf.xacro"/>
+  <xacro:include filename="$(find sp3_panda_ctrl)/urdf/table.urdf.xacro"/>
+  <xacro:include filename="$(find sp3_panda_ctrl)/urdf/lidar_sensor.urdf.xacro"/>
+  <xacro:include filename="$(find sp3_panda_ctrl)/urdf/realsense_d435.urdf.xacro"/>
+  <xacro:include filename="$(find sp3_panda_ctrl)/urdf/wall.urdf.xacro"/>
+
+  <xacro:arg name="arm_id" default="panda" />
+
+  <!-- === FRANKA ROBOT === -->
+  <xacro:franka_robot arm_id="$(arg arm_id)"
+                      joint_limits="${xacro.load_yaml('$(find franka_description)/robots/panda/joint_limits.yaml')}"/>
+
+  <!-- === TABLE === -->
+  <xacro:table parent="panda_link0"/>
+
+  <!-- === WALLS AROUND WORKSPACE === -->
+  <xacro:spawn_walls parent="panda_link0"/>
+
+  <!-- === CAMERA MOUNT LINK === -->
+  <link name="camera_mount">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://sp3_panda_ctrl/meshes/Panda_RealSenseD435_Camera_Mount.STL" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="dark_grey">
+        <color rgba="0.2 0.2 0.2 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <!-- Beispielhafte vereinfachte Box als Kollisionskörper -->
+        <box size="0.00 0.00 0.00"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.3"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <!-- === FIX CAMERA MOUNT TO PANDA HAND === -->
+  <joint name="camera_mount_joint" type="fixed">
+    <parent link="panda_hand"/>
+    <child link="camera_mount"/>
+    <origin xyz="0.063 0.03 -0.01" rpy="0 0 3.1461"/>
+  </joint>
+
+  <!-- === MOUNT INTEL REALSENSE D435 CAMERA === -->
+  <xacro:sensor_d435 parent="camera_mount">
+    <origin xyz="0.025 0.03 0.05" rpy="0 -1.5708 0"/>
+  </xacro:sensor_d435>
+
+  <!-- === SPAWN TRAFFIC LIGHT ON TABLE === -->
+  <xacro:traffic_light parent="table_top" xyz="0.6 -0.72 0.77" rpy="0 0 0"/>
+
+  <!-- === SPAWN TWO LIDAR SENSORS ON TABLE === -->
+  <xacro:lidar_sensor parent="table_top" xyz="-0.6 -0.72 0.77" rpy="0 0 0" prefix="lidar1_"/>
+  <xacro:lidar_sensor parent="table_top" xyz="0.6 0.72 0.77" rpy="0 0 0" prefix="lidar2_"/>
+
+  <!-- === FIX TABLE TO BASE LINK (panda_link0) === -->
+  <joint name="world_to_table_top" type="fixed">
+    <parent link="panda_link0"/>
+    <child link="table_top"/>
+    <origin xyz="0 0 -0.79" rpy="0 0 0"/>  </joint>
+
+</robot>

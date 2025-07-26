@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="sick_lidar">
+
+  <!-- Macro definition for a lidar sensor model -->
+  <xacro:macro name="lidar_sensor" params="parent:=world xyz:='0 0 0' rpy:='0 0 0' prefix:=''">
+
+    <!-- Base cylinder (yellow base) -->
+    <link name="${prefix}base_cylinder">
+      <visual>
+        <origin xyz="0 0 0.015" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.045" length="0.03"/>
+        </geometry>
+        <material name="yellow"><color rgba="1 1 0 1"/></material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0.015" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.045" length="0.03"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.2"/>
+        <origin xyz="0 0 0.015"/>
+        <inertia ixx="1e-4" ixy="0" ixz="0" iyy="1e-4" iyz="0" izz="1e-4"/>
+      </inertial>
+    </link>
+
+    <!-- Upper cylinder (scanner) -->
+    <link name="${prefix}scanner_cylinder">
+      <visual>
+        <origin xyz="0 0 0.045" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.045" length="0.03"/>
+        </geometry>
+        <material name="black"><color rgba="0 0 0 1"/></material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0.045" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.045" length="0.03"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.2"/>
+        <origin xyz="0 0 0.045"/>
+        <inertia ixx="1e-4" ixy="0" ixz="0" iyy="1e-4" iyz="0" izz="1e-4"/>
+      </inertial>
+    </link>
+
+    <!-- Black sphere (rotating dome) -->
+    <link name="${prefix}scanner_sphere">
+      <visual>
+        <origin xyz="0 0 0.1" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.05"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0.1" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.05"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.2"/>
+        <origin xyz="0 0 0.1"/>
+        <inertia ixx="1e-4" ixy="0" ixz="0" iyy="1e-4" iyz="0" izz="1e-4"/>
+      </inertial>
+    </link>
+
+    <!-- Upper cylinder to cover top half of the sphere -->
+    <link name="${prefix}sphere_cover">
+      <visual>
+        <!-- This covers the top of the sphere from 0.105 to 0.165 -->
+        <origin xyz="0 0 0.135" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.06" length="0.03"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0.135" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.06" length="0.06"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.1"/>
+        <origin xyz="0 0 0.135"/>
+        <inertia ixx="1e-4" ixy="0" ixz="0" iyy="1e-4" iyz="0" izz="1e-4"/>
+      </inertial>
+    </link>
+
+    <!-- Gazebo color definitions -->
+    <gazebo reference="${prefix}base_cylinder">
+      <material>Gazebo/Yellow</material>
+    </gazebo>
+    <gazebo reference="${prefix}scanner_cylinder">
+      <material>Gazebo/Black</material>
+    </gazebo>
+    <gazebo reference="${prefix}scanner_sphere">
+      <material>Gazebo/Black</material>
+    </gazebo>
+    <gazebo reference="${prefix}sphere_cover">
+      <material>Gazebo/Black</material>
+    </gazebo>
+
+    <!-- Joints between the sensor parts -->
+    <joint name="${prefix}joint_base_to_scanner" type="fixed">
+      <parent link="${prefix}base_cylinder"/>
+      <child link="${prefix}scanner_cylinder"/>
+    </joint>
+
+    <joint name="${prefix}joint_scanner_to_sphere" type="fixed">
+      <parent link="${prefix}scanner_cylinder"/>
+      <child link="${prefix}scanner_sphere"/>
+    </joint>
+
+    <joint name="${prefix}joint_sphere_to_cover" type="fixed">
+      <parent link="${prefix}scanner_sphere"/>
+      <child link="${prefix}sphere_cover"/>
+    </joint>
+
+    <!-- Mount joint to attach to external parent link -->
+    <joint name="${prefix}sick_lidar_mount_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${prefix}base_cylinder"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+  </xacro:macro>
+
+
+</robot>

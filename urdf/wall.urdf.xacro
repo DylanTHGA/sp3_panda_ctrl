@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="walls">
+
+  <xacro:macro name="spawn_walls" params="parent">
+
+    <!-- Wand rechts -->
+    <link name="Wand_rechts">
+      <visual>
+        <origin xyz="1.5 1.0 2.0" rpy="0 0 0"/>
+        <geometry><box size="5.0 0.1 4.0"/></geometry>
+        <material name="white"><color rgba="1 1 1 1"/></material>
+      </visual>
+      <collision>
+        <origin xyz="1.5 1.0 2" rpy="0 0 0"/>
+        <geometry><box size="5.0 0.1 4.0"/></geometry>
+      </collision>
+      <inertial>
+        <mass value="50.0"/>
+        <origin xyz="1.5 1.0 2" rpy="0 0 0"/>
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      </inertial>
+    </link>
+    <gazebo reference="Wand_rechts"><material>Gazebo/White</material></gazebo>
+    <joint name="Wand_rechts_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="Wand_rechts"/>
+      <origin xyz="0 0 -0.79" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Wand links -->
+    <link name="Wand_links">
+      <visual>
+        <origin xyz="-1.0 -1.5 2.0" rpy="0 0 0"/>
+        <geometry><box size="0.1 5.0 4.0"/></geometry>
+        <material name="white"><color rgba="1 1 1 1"/></material>
+      </visual>
+      <collision>
+        <origin xyz="-1.0 -1.5 2.0" rpy="0 0 0"/>
+        <geometry><box size="0.1 5.0 4.0"/></geometry>
+      </collision>
+      <inertial>
+        <mass value="50.0"/>
+        <origin xyz="-1.0 -1.5 2.0" rpy="0 0 0"/>
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      </inertial>
+    </link>
+    <gazebo reference="Wand_links"><material>Gazebo/White</material></gazebo>
+    <joint name="Wand_links_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="Wand_links"/>
+      <origin xyz="0 0 -0.79" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Wand front -->
+    <link name="Wand_front">
+      <visual>
+        <origin xyz="2.5 -0.5 0.5" rpy="0 0 0"/>
+        <geometry><box size="0.1 3.0 1.0"/></geometry>
+        <material name="white"><color rgba="1 1 1 1"/></material>
+      </visual>
+      <collision>
+        <origin xyz="2.5 -0.5 0.5" rpy="0 0 0"/>
+        <geometry><box size="0.1 3.0 1.0"/></geometry>
+      </collision>
+      <inertial>
+        <mass value="50.0"/>
+        <origin xyz="2.5 -0.5 0.5" rpy="0 0 0"/>
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      </inertial>
+    </link>
+    <gazebo reference="Wand_front"><material>Gazebo/White</material></gazebo>
+    <joint name="Wand_front_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="Wand_front"/>
+      <origin xyz="0 0 -0.79" rpy="0 0 0"/>
+    </joint>
+
+  </xacro:macro>
+
+</robot>
