@@ -2,10 +2,10 @@
 
 Dieses ROS-Paket dient der Steuerung des Franka Emika Panda Cobots mit ROS 1 Noetic unter Ubuntu 20.04.
 
-Es nutzt das `MoveIT Framework` für die Bewegungsplanung und enthält zwei ausführbare Nodes:
+Es nutzt das `MoveIT Framework` für die Bewegungsplanung und enthält einen ausführbaren Node
 
 - `panda_cli_control`: Interaktives Kommandozeilen-Tool zur Steuerung des Roboterarms  
-- `sp_test_node`: Veröffentlicht Pick-Ziele auf ein Topic zur Simulation der  Sweet-Picker-Anwendung
+
 
 ---
 
