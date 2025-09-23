@@ -34,7 +34,6 @@ include_directories(
 ## Executable: panda_cli_control
 add_executable(panda_cli_control
   src/panda_cli_control.cpp
-  src/panda_control_utils.cpp
 )
 
 target_link_libraries(panda_cli_control

@@ -26,7 +26,6 @@ Es nutzt das `MoveIT Framework` für die Bewegungsplanung und enthält einen aus
 | **franka_ros**       | 0.10.1  | https://github.com/frankaemika/franka_ros/tree/0.10.1 |
 | **MoveIt** (panda_moveit_config) | 0.8.1 | https://github.com/moveit/panda_moveit_config/tree/0.8.1 |
 | **gazebo_ros_pkgs**  | 2.9.3   | https://classic.gazebosim.org/tutorials?tut=ros_installing |
-| **realsense_ros**    | 2.3.2   | https://github.com/IntelRealSense/realsense-ros/tree/2.3.2 |
 
 > Verwende exakt die oben genannten Versionen, um Kompatibilitätsprobleme zu vermeiden.
 
@@ -35,14 +34,14 @@ Es nutzt das `MoveIT Framework` für die Bewegungsplanung und enthält einen aus
 ### 1. Catkin Workspace erstellen
 
 1. Workspace-Ordner anlegen:  
-   `mkdir -p ~/catkin_ws/src`
-
+   ```bash
+   mkdir -p ~/catkin_ws/src 
+   ```
 2. Workspace initialisieren:  
    ```bash
    cd ~/catkin_ws/src  
    catkin_init_workspace
    ```
-
 3. Workspace kompilieren:  
    ```bash
    cd ~/catkin_ws  
@@ -51,7 +50,9 @@ Es nutzt das `MoveIT Framework` für die Bewegungsplanung und enthält einen aus
 
 4. `.bashrc` anpassen:  
    Öffne die Datei:  
-   `gedit ~/.bashrc`  
+  ```bash
+   gedit ~/.bashrc 
+   ```
    Und füge folgende Zeile am Ende hinzu:  
    `source ~/catkin_ws/devel/setup.bash`
 
@@ -136,16 +137,26 @@ sudo apt-get install -y ros-noetic-gazebo-ros-pkgs ros-noetic-gazebo-ros-control
 
 ---
 
-### 5. Installation von **realsense-ros**
+### 5. Installation von **moveit**
 
 ```bash
 cd ~/catkin_ws/src  
-git clone -b 2.3.2 https://github.com/IntelRealSense/realsense-ros.git
+git clone --recursive https://github.com/moveit/panda_moveit_config.git
+```
+
+### 6. Klonenen des SP3-Panda-Ctrl Packet
+
+```bash
+cd ~/catkin_ws/src  
+git clone --recursive https://github.com/DylanTHGA/sp3_panda_ctrl.git
 ```
 
 ## Änderungen zur Integration des Panda-Arms in die Simulation
 
-### 1.1 Austausch der `panda.urdf.xacro` Datei 
+### 1.1 Einbinden des SP3_PAnda_Control URDF-Verzeichnis 
+- Das URDF-Verzeichnis vom SP3_Panda_CTRL Packet muss im `franka_ros/franka_description/ -Verzeichnis` enthalten sein. 
+- Der gesamte Ordner kann in das `franka_ros/franka_description/ -Verzeichnis` verschoben werden.
+### 1.2 Austausch der `panda.urdf.xacro` Datei 
 - Die Datei `franka_ros/franka_description/robots/panda.urdf.xacro` muss ersetzt werden durch die `sp3_control/urdf/panda_urdf.xacro` Datei
 ### 1.2 Änderung des `z_offset` in der `panda.launch` 
 - In der Datei franka_ros/franka_gazebo/launch/panda.launch muss der Parameter `z_offset` von `0.0` auf `0.79` geändert werden.
